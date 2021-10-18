@@ -62,7 +62,7 @@ export const AlarmBox = ({ gasData }) => {
 	};
 
 	const handleAddAlarm = () => {
-		if (alarmInput <= 9999 && !alarms.find((item) => item.value === alarmInput)) {
+		if (alarmInput <= 9999 && alarmInput > 0 && !alarms.find((item) => item.value === alarmInput)) {
 			let newAlarm = { value: alarmInput, status: STATUS.SET };
 			setAlarms([newAlarm, ...alarms].sort((a, b) => b.value - a.value));
 		}
@@ -126,7 +126,7 @@ export const AlarmBox = ({ gasData }) => {
 					// min="1"
 					// max="9999"
 					// autofocus="true"
-					maxlength="4"
+					maxLength="4"
 					onChange={(e) => setAlarmInput(e.target.value)}
 					onKeyDown={handleAlarmKeyDown}
 					onWheel={handleAlarmWheel}

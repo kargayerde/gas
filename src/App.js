@@ -11,7 +11,8 @@ const api = etherscanApi.init("");
 const parseTime = (date) => new Date(date).toUTCString().replace("GMT", "UTC");
 
 function App() {
-	const [gasData, setGasData] = useState({ prices: [], socket: null });
+	const [gasData, setGasData] = useState({ prices: [], socket: null, rektFlag: false });
+	const [gasStats, setGasStats] = useState({ sums: [], sampleSize: 0, history: [] });
 	const [ethPrice, setEthPrice] = useState();
 	const [txGasCost, setTxGasCost] = useState(21000);
 
@@ -21,7 +22,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		getGas({ setGasData, gasData, parseTime });
+		getGas({ setGasData, gasData, parseTime, setGasStats });
 	}, []);
 
 	const ethPriceOracle = () => {
@@ -40,7 +41,7 @@ function App() {
 			setGasData({ ...gasData, socket: undefined });
 		} else {
 			console.log("reconnecting...");
-			getGas({ setGasData, gasData, parseTime });
+			getGas({ setGasData, gasData, parseTime, setGasStats, gasStats });
 		}
 	};
 
@@ -53,8 +54,8 @@ function App() {
 			let txCost = ((ethPrice * gasData.prices[index] * txGasCost) / 10 ** 9).toFixed(2);
 			return (
 				<div className={`price-box ${item}`}>
-					{item}: <div className="price">{gasData.prices[index]}</div>
-					<span className="tx-cost">(${txCost})</span>
+					{item}:<div className="price">{gasData.prices[index]}</div>
+					{isNaN(txCost) ? false : <span className="tx-cost">(${txCost})</span>}
 				</div>
 			);
 		});
@@ -72,10 +73,16 @@ function App() {
 							<span> (update count: {gasData.prices[5]})</span>
 						</div>
 						<button className="kill-button" onClick={() => gasStartStop()}>
-							{gasData.socket === null ? "" : !gasData.socket ? "Reconnect" : "KILL"}
+							{gasData.rektFlag === "neutral"
+								? "Connecting..."
+								: gasData.socket
+									? "KILL"
+									: gasData.rektFlag
+										? "Retry"
+										: "Connect"}
 						</button>
 						<div className="eth-price-container">
-							ETH: ${ethPrice ? ethPrice : "fetching"}
+							ETH: {ethPrice ? "$" + ethPrice : "disable adblock"}
 						</div>
 						<div className="tx-select">
 							<div>
