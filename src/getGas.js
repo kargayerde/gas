@@ -13,7 +13,6 @@ const calcAverages = ({ setGasStats, prices }) => {
 
 const getGas = ({ setGasData, gasData, parseTime, setGasStats, config }) => {
 	let messageCount = 0;
-	let autoRetry = config.autoRetry;
 
 	setGasData({ ...gasData, rektFlag: "neutral" });
 
@@ -42,14 +41,17 @@ const getGas = ({ setGasData, gasData, parseTime, setGasStats, config }) => {
 			console.log(`${e.code}: Connection rekt`);
 			setGasData({
 				...gasData,
-				prices: ["R", "E", "K", "T", "gasgas.io api rekt", "retry"],
+				prices: ["R", "E", "K", "T", "gasgas.io api rekt", "ded"],
 				rektFlag: true,
 			});
-			if (autoRetry)
+			console.log({config})
+			if (config.autoRetry) {
+				console.log({ auto: config.autoRetry });
 				setTimeout(() => {
 					getGas({ setGasData, gasData, parseTime, setGasStats, config });
 					console.log(`getting gas`);
 				}, 15000);
+			}
 		}
 	};
 

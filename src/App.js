@@ -1,8 +1,12 @@
-import { useState, useEffect } from "react";
+import { useRef, useState, useEffect } from "react";
 import getGas from "./getGas";
 import etherscanApi from "etherscan-api";
+import axios from "axios";
 
 import { AlarmBox } from "./AlarmBox";
+import { Graph } from "./Graph";
+
+import KEYS from "./auth.js";
 
 import "./App.css";
 
@@ -10,24 +14,62 @@ const api = etherscanApi.init("");
 
 const parseTime = (date) => new Date(date).toUTCString().replace("GMT", "UTC");
 
-function App() {
+const App = () => {
+	const configRef = useRef();
 	const [gasData, setGasData] = useState({ prices: [], socket: null, rektFlag: false });
 	const [gasStats, setGasStats] = useState({ sums: [], sampleSize: 0, history: [] });
+	const [EGSData, setEGSData] = useState({
+		prices: [],
+		sums: [0, 0, 0, 0],
+		sampleSize: 0,
+		history: [],
+	});
 	const [ethPrice, setEthPrice] = useState();
 	const [txGasCost, setTxGasCost] = useState(21000);
-	const [config, setConfig] = useState({ autoRetry: false, showGraph: false });
+	const [config, setConfig] = useState({ autoRetry: false, showGraph: true });
 
 	const getEthPrice = async () => {
 		let price = await api.stats.ethprice();
 		setEthPrice(price.result.ethusd);
 	};
 
+	const getEthGasStation = async () => {
+		let egsPrice = await axios.get(
+			`https://ethgasstation.info/api/ethgasAPI.json?api-key=${KEYS.ethGasStationKey}`
+		);
+		let prices = [
+			egsPrice.data.fastest,
+			egsPrice.data.fast,
+			egsPrice.data.average,
+			egsPrice.data.safeLow,
+		].map((x) => x / 10);
+		setEGSData((prev) => {
+			return {
+				...prev,
+				sampleSize: prev.sampleSize + 1,
+				prices: prices,
+				sums: prev.sums.map((item, index) => item + prices[index]),
+				history: prev.history.concat([prices]),
+			};
+		});
+		console.log({ egsPrice });
+	};
+
 	useEffect(() => {
-		getGas({ setGasData, gasData, parseTime, setGasStats, config });
+		getGas({ setGasData, gasData, parseTime, setGasStats, config: configRef });
 	}, []);
+
+	useEffect(() => {
+		configRef.current = config;
+		// 	console.log("CONFIG IS CHANGED TO" + config);
+	}, [config]);
 
 	const ethPriceOracle = () => {
 		getEthPrice();
+		getEthGasStation();
+
+		setInterval(() => getEthGasStation(), 10000);
+
 		setInterval(async () => {
 			await getEthPrice();
 		}, 15000);
@@ -42,7 +84,7 @@ function App() {
 			setGasData({ ...gasData, socket: undefined });
 		} else {
 			console.log("reconnecting...");
-			getGas({ setGasData, gasData, parseTime, setGasStats, gasStats, config });
+			getGas({ setGasData, gasData, parseTime, setGasStats, gasStats, config: configRef });
 		}
 	};
 
@@ -96,10 +138,17 @@ function App() {
 										// 	console.log(e.target.value);
 										// 	setConfig({ ...config, autoRetry: e.target.value })}
 										// }
-										onChange={() => setConfig((pre) => {
-											if (!pre.autoRetry) gasStartStop();
-											return {...pre, autoRetry: !pre.autoRetry};
-										})}
+										onChange={() => {
+											setConfig((pre) => {
+												console.log("CONFIG IS CHANGED TO ", {
+													ref: configRef.current,
+												});
+												// if (!pre.autoRetry) gasStartStop();
+												console.log({ onchange: pre.autoRetry });
+												return { ...pre, autoRetry: !pre.autoRetry };
+											});
+											configRef.current = config;
+										}}
 									/>
 									<label> auto?</label>
 								</span>
@@ -119,8 +168,9 @@ function App() {
 				</div>
 				<AlarmBox gasData={gasData} />
 			</div>
+			{config.showGraph ? <Graph gasStats={EGSData} /> : null}
 		</div>
 	);
-}
+};
 
 export default App;

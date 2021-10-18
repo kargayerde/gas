@@ -13,6 +13,7 @@
 }
 
 .gas-widget {
+	z-index: 20;
 	display: flex;
 }
 
@@ -78,6 +79,7 @@
 	justify-self: center;
 	height: fit-content;
 	width: calc(100% - 6px);
+	height: 32px;
 	background: none;
 	padding: 0.5% 1%;
 	border: 3px solid rgba(250, 243, 235, 1);
@@ -121,7 +123,7 @@
 	justify-content: space-between;
 	align-items: baseline;
 	height: 40px;
-	padding: 0 6px 0 2px
+	padding: 6px 6px 0 2px
 }
 
 .tx-select * {
