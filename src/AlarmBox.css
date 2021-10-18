@@ -1,0 +1,144 @@
+.alarm-box-container {
+	width: 100px;
+	height: 340px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	margin-left: 4px;
+}
+
+.add-alarm-container {
+	width: 100%;
+	height: 20px;
+	display: flex;
+}
+
+.add-alarm-container * {
+	font-family: var(--main-font);
+	font-size: 10px;
+}
+
+.add-alarm-button {
+	width: 20px;
+	background: none;
+	border: 1.4px rgba(250, 243, 235, 1) solid;
+	border-radius: 50%;
+	margin-left: 4px;
+	padding: 3px;
+}
+
+.add-alarm-button:hover {
+	background: rgba(250, 243, 235, .2);
+	cursor: pointer;
+}
+
+.add-alarm-button:active {
+	background: rgba(250, 243, 235, .8);
+	color: black;
+}
+
+.add-alarm-input {
+	font-size: 23px;
+	border: none;
+	background: none;
+	border-bottom: 2px solid rgba(250, 243, 235, 1);
+	color: rgba(250, 243, 235, 1);
+	width: 76px;
+	cursor: text;
+}
+
+.add-alarm-input:focus {
+	outline: none;
+}
+
+.alarm-box {
+	position: relative;
+	display: flex;
+
+	margin: 1.8px;
+	width: 96%;
+	height: 30.8px;
+	padding: 1px 1px 0 1px;
+	font-size: 12px;
+	border-radius: 2%;
+	color: rgba(250, 243, 235, 1);
+
+	border: 1.2px solid rgba(250, 243, 235, 1);
+	background: rgba(250, 243, 235, .2);
+
+	align-items: center;
+	justify-content: space-between;
+}
+
+.alarm-box-text-box {
+	display: flex;
+	align-items: baseline;
+
+}
+
+.alarm-box-text-box > span:nth-of-type(1) {
+	align-self: flex-start;
+}
+
+.alarm-box-text-box > span:nth-of-type(2) {
+	font-size: 20px;
+}
+
+.alarm-box-text-box > span:nth-of-type(3) {
+	font-size: 8px;
+	padding-left: 1px;
+}
+
+.alarm-box.alert {
+	border: none;
+	background-color: tomato;
+	box-shadow: 0 0 1px 2px greenyellow inset;
+}
+
+.alarm-box:hover .small-button {
+	visibility: visible;
+}
+
+.small-button-box {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: flex;
+	width: max-content;
+	height: max-content;
+	margin-right: 2px;
+	
+	
+}
+
+.small-button {
+	visibility: hidden;
+
+	background: none;
+	border: none;
+	padding: none;
+	margin: 2px 2px 0px 0px;
+	width: 10px;
+	height: 10px;
+	opacity: .9;
+	cursor: pointer;
+
+	justify-self: flex-end;
+	align-self: flex-start;
+}
+
+.small-button:hover {
+	opacity: .75;
+}
+
+.small-button:active {
+	opacity: 1;
+}
+
+.alarm-box:nth-of-type(n + 11) {
+	transform: translateY(20px);
+}
+
+.alarm-box:nth-of-type(n + 65) {
+	display: none;
+}

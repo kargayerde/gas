@@ -1,38 +1,115 @@
-.App {
-  text-align: center;
+.app {
+	width: 100vw;
+	height: 100vh;
+	background: linear-gradient(
+		90deg,
+		rgba(2, 0, 36, 1) 0%,
+		rgba(124, 60, 60, 1) 35%,
+		rgba(0, 113, 136, 1) 100%
+	);
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.gas-widget {
+	display: flex;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.gas-frame-container {
+	position: relative;
+	width: 440px;
+	height: 330px;
+	box-shadow: 0 0 2px 1px rgb(238, 238, 238);
+	background-color: hsl(0, 0%, 99.2%);
+	border-radius: 2%;
+	padding: 0.3rem 0.75rem 0.75rem 0.75rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.gas-frame {
+	display: grid;
+	grid-template-columns: repeat(2, 204px);
+	grid-template-rows: 120px 120px auto;
 }
 
-.App-link {
-  color: #61dafb;
+.price-box {
+	display: flex;
+	width: calc(100% - 6px);
+	flex-direction: column;
+	background-color: rgba(250, 243, 235, 0.3);
+	margin: 3px;
+	padding: 3px 15px;
+	justify-content: center;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.price {
+	font-size: 48px;
+	align-self: center;
 }
+
+.standard {
+	box-shadow: inset 0px 0px 0px 3px rgba(250, 243, 235, 1);
+}
+
+.tx-cost {
+	align-self: center;
+	opacity: .6;
+}
+
+.timestamp {
+	height: fit-content;
+	display: flex;
+	flex-direction: column;
+	grid-column: 1 / span 1;
+	font-size: 11px;
+}
+
+.kill-button {
+	justify-self: center;
+	height: fit-content;
+	width: calc(100% - 6.5px);
+	background: none;
+	padding: 0.5% 1%;
+	border: 3px solid rgba(250, 243, 235, 1);
+	font-family: var(--main-font);
+	font-size: 18px;
+}
+
+.kill-button:hover {
+	cursor: pointer;
+	background-color: rgba(250, 243, 235, 0.3);
+}
+
+.kill-button:active {
+	background-color: rgba(250, 243, 235, 0.8);
+}
+
+
+.eth-price-container {
+	grid-column: 1 / span 1;
+	height: 40px;
+	font-size: 16px;
+	display: flex;
+	align-items: flex-start;
+	margin-top: 5px;
+}
+
+.tx-select {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	height: 40px;
+	margin: -5px 5px 0 0;
+
+}
+
+.tx-select * {
+	font-size: 14px;
+}
+
+#gasCostInput {
+	font-family: var(--main-font);
+	border: none;
+	box-shadow: 0 0 1px 2px rgba(250, 243, 235, 1);
+}
+
