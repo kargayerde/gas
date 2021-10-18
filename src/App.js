@@ -15,6 +15,7 @@ function App() {
 	const [gasStats, setGasStats] = useState({ sums: [], sampleSize: 0, history: [] });
 	const [ethPrice, setEthPrice] = useState();
 	const [txGasCost, setTxGasCost] = useState(21000);
+	const [config, setConfig] = useState({ autoRetry: false, showGraph: false });
 
 	const getEthPrice = async () => {
 		let price = await api.stats.ethprice();
@@ -22,7 +23,7 @@ function App() {
 	};
 
 	useEffect(() => {
-		getGas({ setGasData, gasData, parseTime, setGasStats });
+		getGas({ setGasData, gasData, parseTime, setGasStats, config });
 	}, []);
 
 	const ethPriceOracle = () => {
@@ -41,7 +42,7 @@ function App() {
 			setGasData({ ...gasData, socket: undefined });
 		} else {
 			console.log("reconnecting...");
-			getGas({ setGasData, gasData, parseTime, setGasStats, gasStats });
+			getGas({ setGasData, gasData, parseTime, setGasStats, gasStats, config });
 		}
 	};
 
@@ -72,28 +73,47 @@ function App() {
 							<span>{gasData.prices[4]}</span>
 							<span> (update count: {gasData.prices[5]})</span>
 						</div>
-						<button className="kill-button" onClick={() => gasStartStop()}>
-							{gasData.rektFlag === "neutral"
-								? "Connecting..."
-								: gasData.socket
-									? "KILL"
-									: gasData.rektFlag
-										? "Retry"
-										: "Connect"}
-						</button>
 						<div className="eth-price-container">
 							ETH: {ethPrice ? "$" + ethPrice : "disable adblock"}
 						</div>
+						<div className="kill-button-container">
+							<button className="kill-button" onClick={() => gasStartStop()}>
+								{gasData.rektFlag === "neutral"
+									? "Connecting..."
+									: gasData.socket
+									? "KILL"
+									: gasData.rektFlag
+									? "Retry"
+									: "Connect"}
+							</button>
+							{gasData.rektFlag === true ? (
+								<span className="autoconnect-checkbox">
+									<input
+										type="checkbox"
+										id="autoconnect"
+										checked={config.autoRetry}
+										// onChange={(e) =>{
+										// 	console.log(e.target.value);
+										// 	setConfig({ ...config, autoRetry: e.target.value })}
+										// }
+										onChange={() => setConfig((pre) => {
+											if (!pre.autoRetry) gasStartStop();
+											return {...pre, autoRetry: !pre.autoRetry};
+										})}
+									/>
+									<label> auto?</label>
+								</span>
+							) : null}
+						</div>
+
 						<div className="tx-select">
-							<div>
-								<label htmlFor="gasCostInput">tx type: </label>
-								<select id="gasCostInput" onChange={handleTxTypeInput}>
-									<option value={21000}>send ETH</option>
-									<option value={65000}>send ERC20</option>
-									<option value={175000}>LP</option>
-									<option value={200000}>SWAP</option>
-								</select>
-							</div>
+							<label htmlFor="gasCostInput">tx type: </label>
+							<select id="gasCostInput" onChange={handleTxTypeInput}>
+								<option value={21000}>send ETH</option>
+								<option value={65000}>send ERC20</option>
+								<option value={175000}>LP</option>
+								<option value={200000}>SWAP</option>
+							</select>
 						</div>
 					</div>
 				</div>

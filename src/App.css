@@ -28,6 +28,8 @@
 
 .gas-frame {
 	display: grid;
+	height: 100%;
+	width: 100%;
 	grid-template-columns: repeat(2, 204px);
 	grid-template-rows: 120px 120px auto;
 }
@@ -63,16 +65,25 @@
 	grid-column: 1 / span 1;
 	font-size: 11px;
 }
+.kill-button-container {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	grid-column: 2 / span 1;
+	grid-row: 3 / span 1;
+
+}
 
 .kill-button {
 	justify-self: center;
 	height: fit-content;
-	width: calc(100% - 6.5px);
+	width: calc(100% - 6px);
 	background: none;
 	padding: 0.5% 1%;
 	border: 3px solid rgba(250, 243, 235, 1);
 	font-family: var(--main-font);
 	font-size: 18px;
+	margin: 0 0 0 2px;
 }
 
 .kill-button:hover {
@@ -82,6 +93,14 @@
 
 .kill-button:active {
 	background-color: rgba(250, 243, 235, 0.8);
+}
+
+.autoconnect-checkbox {
+	position: absolute;
+	right: 16px;
+	bottom: 20px;
+	font-size: 10px;
+
 }
 
 .eth-price-container {
@@ -94,19 +113,25 @@
 }
 
 .tx-select {
+	grid-row: 4 / span 1;
+	grid-column: 2 / span 1;
+
 	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: baseline;
 	height: 40px;
-	margin: -5px 5px 0 0;
+	padding: 0 6px 0 2px
 }
 
 .tx-select * {
 	font-size: 14px;
+	margin: 0 0 5px 0;
 }
 
 #gasCostInput {
 	font-family: var(--main-font);
 	border: none;
 	box-shadow: 0 0 1px 2px rgba(250, 243, 235, 1);
+	width: 120px;
 }

@@ -11,9 +11,11 @@ const calcAverages = ({ setGasStats, prices }) => {
 	}));
 };
 
-const getGas = ({ setGasData, gasData, parseTime, setGasStats }) => {
+const getGas = ({ setGasData, gasData, parseTime, setGasStats, config }) => {
 	let messageCount = 0;
-	setGasData({ ...gasData, rektFlag: "neutral"});
+	let autoRetry = config.autoRetry;
+
+	setGasData({ ...gasData, rektFlag: "neutral" });
 
 	console.log(`opening websocket`);
 
@@ -21,8 +23,7 @@ const getGas = ({ setGasData, gasData, parseTime, setGasStats }) => {
 
 	socket.onopen = (e) => {
 		console.log("websocket connected");
-		setGasData({ ...gasData, socket: socket, rektFlag: false});
-
+		setGasData({ ...gasData, socket: socket, rektFlag: false });
 	};
 
 	socket.onmessage = (e) => {
@@ -41,9 +42,14 @@ const getGas = ({ setGasData, gasData, parseTime, setGasStats }) => {
 			console.log(`${e.code}: Connection rekt`);
 			setGasData({
 				...gasData,
-				prices: ["R", "E", "K", "T", "gasgas.io api rekt", "refresh"],
+				prices: ["R", "E", "K", "T", "gasgas.io api rekt", "retry"],
 				rektFlag: true,
 			});
+			if (autoRetry)
+				setTimeout(() => {
+					getGas({ setGasData, gasData, parseTime, setGasStats, config });
+					console.log(`getting gas`);
+				}, 15000);
 		}
 	};
 
