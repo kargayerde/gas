@@ -53,7 +53,7 @@
 
 .tx-cost {
 	align-self: center;
-	opacity: .6;
+	opacity: 0.6;
 }
 
 .timestamp {
@@ -84,7 +84,6 @@
 	background-color: rgba(250, 243, 235, 0.8);
 }
 
-
 .eth-price-container {
 	grid-column: 1 / span 1;
 	height: 40px;
@@ -100,7 +99,6 @@
 	align-items: flex-end;
 	height: 40px;
 	margin: -5px 5px 0 0;
-
 }
 
 .tx-select * {
@@ -112,4 +110,3 @@
 	border: none;
 	box-shadow: 0 0 1px 2px rgba(250, 243, 235, 1);
 }
-

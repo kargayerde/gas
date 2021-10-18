@@ -24,10 +24,12 @@ function App() {
 		getGas({ setGasData, gasData, parseTime });
 	}, []);
 
-	const ethPriceOracle = () =>
+	const ethPriceOracle = () => {
+		getEthPrice();
 		setInterval(async () => {
 			await getEthPrice();
 		}, 15000);
+	};
 
 	useEffect(() => ethPriceOracle(), []);
 
@@ -88,7 +90,7 @@ function App() {
 						</div>
 					</div>
 				</div>
-				<AlarmBox gasData={gasData}/>
+				<AlarmBox gasData={gasData} />
 			</div>
 		</div>
 	);
