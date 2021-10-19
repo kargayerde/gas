@@ -32,7 +32,7 @@ export const Graph = ({ gasStats }) => {
 								<span
 									className="line-graph-point"
 									style={{
-										left: `${x1 + 20}px`,
+										left: `${x1 + 10}px`,
 										bottom: `${item}px`,
 									}}
 								></span>
