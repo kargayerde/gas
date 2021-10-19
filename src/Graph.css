@@ -10,7 +10,7 @@
 
 	display: flex;
 
-	border: 3px rgba(250, 243, 235, 1) solid;
+	/* border: 3px rgba(250, 243, 235, 1) solid; */
 	padding-right: 10px;
 	overflow: visible;
 
@@ -18,6 +18,31 @@
 	justify-content: flex-end;
 
 	z-index: 1;
+}
+
+.line-graph-container {
+	z-index: 300;
+	background: none;
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: visible;
+}
+
+.line-graph-point {
+	transform: rotate(-45deg);
+	width: 4px;
+	height: 4px;
+	background-color: tomato;
+	border: red  1px solid;
+	box-shadow: 0 0 0 1px black;
+	position: absolute;
+
+	z-index: 400;
+}
+
+.graph-bar {
+	box-shadow: 0 0 0 .1px black;
 }
 
 .graph-info-box {

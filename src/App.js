@@ -52,7 +52,6 @@ const App = () => {
 				history: prev.history.concat([prices]),
 			};
 		});
-		console.log({ egsPrice });
 	};
 
 	useEffect(() => {
@@ -105,7 +104,7 @@ const App = () => {
 	};
 
 	return (
-		<div className="app">
+		<div className="app">			
 			<div className="gas-widget">
 				<div className="gas-frame-container">
 					<div className="gas-frame">

@@ -13,7 +13,8 @@
 }
 
 .gas-widget {
-	z-index: 20;
+	opacity: .9;
+	z-index: 200;
 	display: flex;
 }
 
