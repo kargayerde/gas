@@ -1,5 +1,5 @@
 .app {
-	width: 100vw;
+	min-width: 100vw;
 	height: 100vh;
 	background: linear-gradient(
 		90deg,
@@ -13,7 +13,7 @@
 }
 
 .gas-widget {
-	opacity: .9;
+	opacity: 0.9;
 	z-index: 200;
 	display: flex;
 }
@@ -73,7 +73,6 @@
 	position: relative;
 	grid-column: 2 / span 1;
 	grid-row: 3 / span 1;
-
 }
 
 .kill-button {
@@ -103,7 +102,6 @@
 	right: 16px;
 	bottom: 20px;
 	font-size: 10px;
-
 }
 
 .eth-price-container {
@@ -124,7 +122,7 @@
 	justify-content: space-between;
 	align-items: baseline;
 	height: 40px;
-	padding: 6px 6px 0 2px
+	padding: 6px 6px 0 2px;
 }
 
 .tx-select * {

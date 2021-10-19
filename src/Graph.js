@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import "./Graph.css";
 
 export const Graph = ({ gasStats }) => {
@@ -10,10 +10,13 @@ export const Graph = ({ gasStats }) => {
 	};
 	const chartSpacing = 10;
 
+	const scrollRef = useRef();
+
 	const findMeans = ({ historyArray }) =>
 		historyArray.map((array) => array.reduce((a, b) => a + b) / 4);
 
 	// let positions = [...Array(500).keys()].map(() => Math.random() * Math.random() * 500 + 30);
+
 	const renderLines = ({ positions, offset }) => {
 		return (
 			<div className="line-graph-container">
@@ -25,20 +28,29 @@ export const Graph = ({ gasStats }) => {
 					let y2 = viewport - Number(positions[index + 1]);
 					if (!y2)
 						return (
-							<span
-								className="line-graph-point"
-								style={{
-									left: `${x1 + 20}px`,
-									bottom: `${item}px`,
-								}}
-							></span>
+							<React.Fragment>
+								<span
+									className="line-graph-point"
+									style={{
+										left: `${x1 + 20}px`,
+										bottom: `${item}px`,
+									}}
+								></span>
+								<span
+									ref={scrollRef}
+									className="absence"
+									style={{
+										left: `${x1 + 200}px`,
+									}}
+								></span>
+							</React.Fragment>
 						);
 					return (
 						<React.Fragment>
 							<span
 								className="line-graph-point"
 								style={{
-									left: `${x1 + 20}px`,
+									left: `${x1 + 10}px`,
 									bottom: `${item}px`,
 								}}
 							></span>
@@ -47,7 +59,7 @@ export const Graph = ({ gasStats }) => {
 								className={`line line-${index}`}
 								style={{
 									position: "absolute",
-									left: "20px",
+									left: "10px",
 									overflow: "visible",
 									opacity: "1",
 								}}
@@ -71,7 +83,7 @@ export const Graph = ({ gasStats }) => {
 	const renderBars = () => {
 		return gasStats.history.map((array, index) => {
 			let offset = (index + 1) * chartSpacing;
-			
+
 			const drawBar = () =>
 				array.map((item, index) => {
 					let colorArr = Object.values(COLORS);
@@ -91,14 +103,28 @@ export const Graph = ({ gasStats }) => {
 		});
 	};
 
+	useEffect(() => {
+		console.log(`rendering bars`);
+		if (scrollRef.current)
+			scrollRef.current.scrollIntoView({ behavior: "smooth", inline: "center" });
+	}, [renderBars()]);
+
 	return (
-		<div className="graph-container">
-			<div className="graph-info-box">
-				<div>ETH Gas Station API</div>
-				{gasStats.prices.map((item) => (
-					<div>{item}</div>
-				))}
-			</div>
+		<React.Fragment>
+		<div className="graph-info-box">
+		<div>ETH Gas Station API</div>
+		{gasStats.prices.map((item) => (
+			<div>{item}</div>
+		))}
+	</div>
+		<div
+			className="graph-container"
+			onWheel={(e) => {
+				console.log({ value: e.deltaY, e, scrollRef });
+				e.target.scrollBy(e.deltaY, 0); // BUGBUG
+			}}
+		>
+
 
 			{renderLines({
 				positions: findMeans({ historyArray: gasStats.history }),
@@ -107,5 +133,6 @@ export const Graph = ({ gasStats }) => {
 
 			{renderBars()}
 		</div>
+		</React.Fragment>
 	);
 };

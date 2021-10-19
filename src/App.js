@@ -67,11 +67,9 @@ const App = () => {
 		getEthPrice();
 		getEthGasStation();
 
-		setInterval(() => getEthGasStation(), 10000);
+		setInterval(() => getEthGasStation(), 5000);
 
-		setInterval(async () => {
-			await getEthPrice();
-		}, 15000);
+		setInterval(() => getEthPrice(), 15000);
 	};
 
 	useEffect(() => ethPriceOracle(), []);
@@ -104,7 +102,7 @@ const App = () => {
 	};
 
 	return (
-		<div className="app">			
+		<div className="app">
 			<div className="gas-widget">
 				<div className="gas-frame-container">
 					<div className="gas-frame">
