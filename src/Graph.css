@@ -34,7 +34,7 @@
 	width: 4px;
 	height: 4px;
 	background-color: tomato;
-	border: red  1px solid;
+	border: red 1px solid;
 	box-shadow: 0 0 0 1px black;
 	position: absolute;
 
@@ -42,7 +42,7 @@
 }
 
 .graph-bar {
-	box-shadow: 0 0 0 .1px black;
+	box-shadow: 0 0 0 0.1px black;
 }
 
 .absence {
@@ -56,15 +56,35 @@
 
 .graph-info-box {
 	position: absolute;
-	top: 4px;
-	right: 4px;
+	top: 8px;
+	right: 8px;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-end;
 
 	opacity: 0.9;
 	color: rgba(250, 243, 235, 1);
+}
 
+.temp-alarm {
+	position: absolute;
+	top: 40px;
+	right: 60px;
+
+	z-index: 30;
+}
+
+.temp-alarm .alarm-box-container {
+	flex-wrap: nowrap;
+}
+
+.temp-alarm .alarm-box-container > div {
+	transform: none;
+	margin-bottom: 4px;
+}
+
+.temp-alarm .alarm-box-container > div:nth-of-type(n + 20) {
+	display: none;
 }
 
 .graph-info-box > div:nth-of-type(n + 2) {
@@ -77,7 +97,7 @@
 	align-items: center;
 	justify-content: center;
 
-    text-shadow: 1px 1px 0 black;
+	text-shadow: 1px 1px 0 black;
 }
 
 .graph-info-box > div:nth-of-type(2) {

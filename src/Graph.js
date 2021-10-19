@@ -1,4 +1,7 @@
 import React, { useRef, useEffect } from "react";
+
+import { AlarmBox } from "./AlarmBox";
+
 import "./Graph.css";
 
 export const Graph = ({ gasStats }) => {
@@ -111,28 +114,30 @@ export const Graph = ({ gasStats }) => {
 
 	return (
 		<React.Fragment>
-		<div className="graph-info-box">
-		<div>ETH Gas Station API</div>
-		{gasStats.prices.map((item) => (
-			<div>{item}</div>
-		))}
-	</div>
-		<div
-			className="graph-container"
-			onWheel={(e) => {
-				console.log({ value: e.deltaY, e, scrollRef });
-				e.target.scrollBy(e.deltaY, 0); // BUGBUG
-			}}
-		>
+			<div className="graph-info-box">
+				<div>ETH Gas Station API</div>
+				{gasStats.prices.map((item) => (
+					<div>{item}</div>
+				))}
+			</div>
+			<div className="temp-alarm">
+				<AlarmBox gasData={gasStats} />
+			</div>
 
+			<div
+				className="graph-container"
+				onWheel={(e) => {
+					console.log({ value: e.deltaY, e, scrollRef });
+					e.target.scrollBy(e.deltaY, 0); // BUGBUG
+				}}
+			>
+				{renderLines({
+					positions: findMeans({ historyArray: gasStats.history }),
+					offset: chartSpacing,
+				})}
 
-			{renderLines({
-				positions: findMeans({ historyArray: gasStats.history }),
-				offset: chartSpacing,
-			})}
-
-			{renderBars()}
-		</div>
+				{renderBars()}
+			</div>
 		</React.Fragment>
 	);
 };
