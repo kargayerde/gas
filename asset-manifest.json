@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/gas/static/css/main.c4a6bb28.chunk.css",
-    "main.js": "/gas/static/js/main.d542b2f1.chunk.js",
-    "main.js.map": "/gas/static/js/main.d542b2f1.chunk.js.map",
+    "main.css": "/gas/static/css/main.f088a382.chunk.css",
+    "main.js": "/gas/static/js/main.0a4c6352.chunk.js",
+    "main.js.map": "/gas/static/js/main.0a4c6352.chunk.js.map",
     "runtime-main.js": "/gas/static/js/runtime-main.95ebdf64.js",
     "runtime-main.js.map": "/gas/static/js/runtime-main.95ebdf64.js.map",
     "static/js/2.d2bdfbc2.chunk.js": "/gas/static/js/2.d2bdfbc2.chunk.js",
     "static/js/2.d2bdfbc2.chunk.js.map": "/gas/static/js/2.d2bdfbc2.chunk.js.map",
     "index.html": "/gas/index.html",
-    "static/css/main.c4a6bb28.chunk.css.map": "/gas/static/css/main.c4a6bb28.chunk.css.map",
+    "static/css/main.f088a382.chunk.css.map": "/gas/static/css/main.f088a382.chunk.css.map",
     "static/js/2.d2bdfbc2.chunk.js.LICENSE.txt": "/gas/static/js/2.d2bdfbc2.chunk.js.LICENSE.txt",
     "static/media/asdf.b49a92e1.wav": "/gas/static/media/asdf.b49a92e1.wav",
     "static/media/cross.7ac58f49.svg": "/gas/static/media/cross.7ac58f49.svg",
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.95ebdf64.js",
     "static/js/2.d2bdfbc2.chunk.js",
-    "static/css/main.c4a6bb28.chunk.css",
-    "static/js/main.d542b2f1.chunk.js"
+    "static/css/main.f088a382.chunk.css",
+    "static/js/main.0a4c6352.chunk.js"
   ]
 }
