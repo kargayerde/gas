@@ -20,6 +20,19 @@
 	z-index: 1;
 }
 
+.autoscroll-info {
+	position: absolute;
+	width: fit-content;
+	bottom: 2vh;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+	
+	color: rgba(250, 243, 235, 0.6);
+	z-index: 500;
+}
+
 .line-graph-container {
 	z-index: 300;
 	background: none;

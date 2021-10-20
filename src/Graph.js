@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { AlarmBox } from "./AlarmBox";
 
@@ -13,16 +13,27 @@ export const Graph = ({ gasStats }) => {
 	};
 	const chartSpacing = 10;
 
-	const scrollRef = useRef();
+	const autoScrollRef = useRef();
+	const [autoScroll, setAutoScroll] = useState(true);
 
 	const findMeans = ({ historyArray }) =>
 		historyArray.map((array) => array.reduce((a, b) => a + b) / 4);
+
+	const scrollGraph = ({ event, element }) => {
+		element.scrollBy(event.deltaY, 0);
+
+		let maxScroll = element.scrollWidth - element.clientWidth;
+		setAutoScroll(element.scrollLeft === maxScroll ? true : false);
+	};
 
 	// let positions = [...Array(500).keys()].map(() => Math.random() * Math.random() * 500 + 30);
 
 	const renderLines = ({ positions, offset }) => {
 		return (
-			<div className="line-graph-container">
+			<div
+				className="line-graph-container"
+				onWheel={(e) => scrollGraph({ event: e, element: e.target.parentNode })}
+			>
 				{positions.map((item, index) => {
 					let viewport = window.innerHeight;
 					let x1 = index * offset;
@@ -34,13 +45,19 @@ export const Graph = ({ gasStats }) => {
 							<React.Fragment>
 								<span
 									className="line-graph-point"
+									onWheel={(e) =>
+										scrollGraph({
+											event: e,
+											element: e.target.parentNode.parentNode,
+										})
+									}
 									style={{
 										left: `${x1 + 10}px`,
 										bottom: `${item}px`,
 									}}
 								></span>
 								<span
-									ref={scrollRef}
+									ref={autoScrollRef}
 									className="absence"
 									style={{
 										left: `${x1 + 200}px`,
@@ -52,6 +69,12 @@ export const Graph = ({ gasStats }) => {
 						<React.Fragment>
 							<span
 								className="line-graph-point"
+								onWheel={(e) =>
+									scrollGraph({
+										event: e,
+										element: e.target.parentNode.parentNode,
+									})
+								}
 								style={{
 									left: `${x1 + 10}px`,
 									bottom: `${item}px`,
@@ -60,6 +83,12 @@ export const Graph = ({ gasStats }) => {
 							<svg
 								index={index}
 								className={`line line-${index}`}
+								onWheel={(e) =>
+									scrollGraph({
+										event: e,
+										element: e.target.parentNode.parentNode,
+									})
+								}
 								style={{
 									position: "absolute",
 									left: "10px",
@@ -99,38 +128,61 @@ export const Graph = ({ gasStats }) => {
 						background: `${colorArr[index]}`,
 						zIndex: `${100 + index}`,
 					};
-					return <span className="graph-bar" style={style}></span>;
+					return (
+						<span
+							className="graph-bar"
+							onWheel={(e) =>
+								scrollGraph({
+									event: e,
+									element: e.target.parentNode.parentNode,
+								})
+							}
+							style={style}
+						></span>
+					);
 				});
 
-			return <span className="bar-container">{drawBar()}</span>;
+			return (
+				<span
+					className="bar-container"
+					onWheel={(e) =>
+						scrollGraph({
+							event: e,
+							element: e.target.parentNode,
+						})
+					}
+				>
+					{drawBar()}
+				</span>
+			);
 		});
 	};
 
 	useEffect(() => {
-		console.log(`rendering bars`);
-		if (scrollRef.current)
-			scrollRef.current.scrollIntoView({ behavior: "smooth", inline: "center" });
+		if (autoScrollRef.current && autoScroll)
+			autoScrollRef.current.scrollIntoView({
+				behavior: "smooth",
+				inline: "center",
+				block: "center",
+			});
 	}, [renderBars()]);
 
 	return (
 		<React.Fragment>
 			<div className="graph-info-box">
 				<div>ETH Gas Station API</div>
-				{gasStats.prices.map((item) => (
-					<div>{item}</div>
-				))}
+				{gasStats.prices.map((item) => (<div>{item}</div>))}
 			</div>
 			<div className="temp-alarm">
 				<AlarmBox gasData={gasStats} />
 			</div>
 
+			{autoScroll ? null : <div className="autoscroll-info">autoscroll paused</div>}
 			<div
 				className="graph-container"
-				onWheel={(e) => {
-					console.log({ value: e.deltaY, e, scrollRef });
-					e.target.scrollBy(e.deltaY, 0); // BUGBUG
-				}}
+				onWheel={(e) => scrollGraph({ event: e, element: e.target })}
 			>
+				
 				{renderLines({
 					positions: findMeans({ historyArray: gasStats.history }),
 					offset: chartSpacing,
