@@ -1,17 +1,6 @@
 const convWeiToGwei = (wei) => wei / 10 ** 9;
 
-const calcAverages = ({ setGasStats, prices }) => {
-	setGasStats((prevGasStats) => ({
-		sums:
-			prevGasStats.sampleSize === 0
-				? prices.slice(0, 4)
-				: prevGasStats.sums.map((item, index) => Number(item) + Number(prices[index])),
-		sampleSize: prevGasStats.sampleSize + 1,
-		history: [...prevGasStats.history].concat([prices.slice(0, 4)]),
-	}));
-};
-
-const getGas = ({ setGasData, gasData, parseTime, setGasStats, config }) => {
+const getGas = ({ setGasData, gasData, parseTime, config }) => {
 	let messageCount = 0;
 
 	setGasData({ ...gasData, rektFlag: "neutral" });
@@ -27,11 +16,25 @@ const getGas = ({ setGasData, gasData, parseTime, setGasStats, config }) => {
 
 	socket.onmessage = (e) => {
 		messageCount++;
-		let prices = Object.values(JSON.parse(e.data).data).map((value, index) => {
+		let priceData = Object.values(JSON.parse(e.data).data).map((value, index) => {
 			return index === 4 ? parseTime(value) : convWeiToGwei(value).toFixed(1);
 		});
-		setGasData({ socket: socket, prices: [...prices, messageCount] });
-		calcAverages({ setGasStats, prices });
+		let prices = priceData.slice(0, 4);
+		let timestamp = priceData[4];
+		setGasData((prev) => {
+			return {
+				socket: socket,
+				prices: [...prices],
+				updateCount: messageCount,
+				lastUpdate: timestamp,
+				sums:
+					prev.sampleSize === 0
+						? prices
+						: prev.sums.map((item, index) => Number(item) + Number(prices[index])),
+				sampleSize: prev.sampleSize + 1,
+				history: [...prev.history].concat([prices]),
+			};
+		});
 	};
 
 	socket.onclose = (e) => {
@@ -44,11 +47,11 @@ const getGas = ({ setGasData, gasData, parseTime, setGasStats, config }) => {
 				prices: ["R", "E", "K", "T", "gasgas.io api rekt", "ded"],
 				rektFlag: true,
 			});
-			console.log({config})
+			console.log({ config });
 			if (config.autoRetry) {
 				console.log({ auto: config.autoRetry });
 				setTimeout(() => {
-					getGas({ setGasData, gasData, parseTime, setGasStats, config });
+					getGas({ setGasData, gasData, parseTime, config });
 					console.log(`getting gas`);
 				}, 15000);
 			}

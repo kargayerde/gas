@@ -17,7 +17,7 @@ export const Graph = ({ gasStats }) => {
 	const [autoScroll, setAutoScroll] = useState(true);
 
 	const findMeans = ({ historyArray }) =>
-		historyArray.map((array) => array.reduce((a, b) => a + b) / 4);
+		historyArray.map((array) => array.reduce((a, b) => Number(a) + Number(b)) / 4);
 
 	const scrollGraph = ({ event, element }) => {
 		element.scrollBy(event.deltaY, 0);
@@ -167,11 +167,21 @@ export const Graph = ({ gasStats }) => {
 			});
 	}, [renderBars()]);
 
+	if (!gasStats.history[0]) {
+		console.log({ failed: gasStats });
+		return null;
+	}
+
+	console.log({ passed: gasStats });
+
+
 	return (
 		<React.Fragment>
 			<div className="graph-info-box">
 				<div>ETH Gas Station API</div>
-				{gasStats.prices.map((item) => (<div>{item}</div>))}
+				{gasStats.prices.map((item) => (
+					<div>{item}</div>
+				))}
 			</div>
 			<div className="temp-alarm">
 				<AlarmBox gasData={gasStats} />
@@ -182,7 +192,6 @@ export const Graph = ({ gasStats }) => {
 				className="graph-container"
 				onWheel={(e) => scrollGraph({ event: e, element: e.target })}
 			>
-				
 				{renderLines({
 					positions: findMeans({ historyArray: gasStats.history }),
 					offset: chartSpacing,
