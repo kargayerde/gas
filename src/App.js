@@ -174,6 +174,15 @@ const App = () => {
 				</div>
 				<AlarmBox gasData={ggData} />
 			</div>
+			<div className="graph-info-box">
+				<div>ETH Gas Station API</div>
+				{EGSData.prices.map((item) => (
+					<div>{item}</div>
+				))}
+			</div>
+			<div className="temp-alarm">
+				<AlarmBox gasData={EGSData} />
+			</div>
 			{config.showGraph ? <Graph gasStats={ggData.rektFlag ? EGSData : ggData} /> : null}
 		</div>
 	);

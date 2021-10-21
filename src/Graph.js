@@ -177,16 +177,6 @@ export const Graph = ({ gasStats }) => {
 
 	return (
 		<React.Fragment>
-			<div className="graph-info-box">
-				<div>ETH Gas Station API</div>
-				{gasStats.prices.map((item) => (
-					<div>{item}</div>
-				))}
-			</div>
-			<div className="temp-alarm">
-				<AlarmBox gasData={gasStats} />
-			</div>
-
 			{autoScroll ? null : <div className="autoscroll-info">autoscroll paused</div>}
 			<div
 				className="graph-container"
