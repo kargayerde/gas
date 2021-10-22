@@ -1,6 +1,6 @@
 {
   "name": "eth-gas-dashboard",
-  "homepage": "https://kargayerde.github.io/gas",
+  "homepage": "/gas",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
