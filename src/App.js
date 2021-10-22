@@ -6,9 +6,11 @@ import axios from "axios";
 import { AlarmBox } from "./AlarmBox";
 import { Graph } from "./Graph";
 
-import KEYS from "./auth.js";
+// import KEYS from "./auth.js";
 
 import "./App.css";
+
+const KEYS = {}
 
 const api = etherscanApi.init("");
 
